@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:component-scan base-package="app"></context:component-scan>
+
+    <bean id="serviceProvider" class="app.service.ServiceProvider" lazy-init="true">
+        <constructor-arg name="userServiceImpl" ref="userService"/>
+        <constructor-arg name="orderServiceImpl" ref="orderService"/>
+        <constructor-arg name="orderGoodsService" ref="orderGoodsService"/>
+        <constructor-arg name="goodsService" ref="goodsService"/>
+    </bean>
+
+    <bean id="userService" class="app.service.impl.UserServiceImpl" lazy-init="true">
+        <property name ="userDao" ref = "userDao"/>
+    </bean>
+
+    <bean id="orderService" class="app.service.impl.OrderServiceImpl" lazy-init="true">
+        <property name ="orderDao" ref = "orderDao"/>
+    </bean>
+
+    <bean id="orderGoodsService" class="app.service.impl.OrderGoodsServiceImpl" lazy-init="true">
+        <property name ="dao" ref = "daoProvider"/>
+    </bean>
+
+    <bean id="goodsService" class="app.service.impl.GoodsServiceImpl" lazy-init="true">
+        <property name ="goodDao" ref = "goodDao"/>
+    </bean>
+
+    <bean id="daoProvider" class="app.dao.DAOProvider" lazy-init="true">
+        <property name ="orderDao" ref = "orderDao"/>
+        <property name ="userDao" ref = "userDao"/>
+        <property name ="goodDao" ref = "goodDao"/>
+        <property name ="orderGoodsDao" ref = "orderGoodsDao"/>
+    </bean>
+
+    <bean id="orderDao" class="app.dao.impl.OrderDaoImpl" lazy-init="true">
+        <property name ="provider" ref = "dataSource"/>
+    </bean>
+
+
+    <bean id="goodDao" class="app.dao.impl.GoodDaoImpl" lazy-init="true">
+        <property name ="provider" ref = "dataSource"/>
+    </bean>
+
+    <bean id="orderGoodsDao" class="app.dao.impl.OrderGoodsDaoImpl" lazy-init="true">
+        <property name ="provider" ref = "dataSource"/>
+    </bean>
+
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource" lazy-init="true" scope="prototype">
+        <property name="driverClassName" value="org.h2.Driver" />
+        <property name="url" value="jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1" />
+    </bean>
+
+</beans>

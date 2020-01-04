@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <session-config>
+        <session-timeout>15</session-timeout> <!-- in minutes -->
+    </session-config>
+
+    <servlet>
+        <servlet-name>CreateUserServlet</servlet-name>
+        <servlet-class>app.servlets.CreateUserServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>GoodsAddServlet</servlet-name>
+        <servlet-class>app.servlets.GoodsAddServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>printCheckServlet</servlet-name>
+        <servlet-class>app.servlets.PrintCheckServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>CompletiveServlet</servlet-name>
+        <servlet-class>app.servlets.CompletiveServlet</servlet-class>
+    </servlet>
+
+    <filter>
+        <filter-name>TermsCheckFilter</filter-name>
+        <filter-class>app.filters.TermsCheckFilter</filter-class>
+        <init-param>
+            <param-name>LogFileName</param-name>
+            <param-value>UserLog.txt</param-value>
+        </init-param>
+    </filter>
+
+    <filter>
+        <filter-name>CheckButtonFilter</filter-name>
+        <filter-class>app.filters.CheckButtonFilter</filter-class>
+        <init-param>
+            <param-name>LogFileName</param-name>
+            <param-value>UserLog.txt</param-value>
+        </init-param>
+    </filter>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/view/errors/notFoundError.jsp</location>
+    </error-page>
+
+    <filter-mapping>
+        <filter-name>TermsCheckFilter</filter-name>
+        <url-pattern>/createUserServlet</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>CheckButtonFilter</filter-name>
+        <url-pattern>/goodsAddServlet</url-pattern>
+        <url-pattern>/complete</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CreateUserServlet</servlet-name>
+        <url-pattern>/createUserServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>GoodsAddServlet</servlet-name>
+        <url-pattern>/goodsAddServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>printCheckServlet</servlet-name>
+        <url-pattern>/printCheckServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CompletiveServlet</servlet-name>
+        <url-pattern>/complete</url-pattern>
+    </servlet-mapping>
+</web-app>
